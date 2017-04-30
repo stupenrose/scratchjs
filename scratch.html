@@ -51,14 +51,17 @@ whenKeyPressed('w', function(){
 })
 
 scratchCat.whenClicked(function(){
-	alert("you clicked me!")
+	playSound("meow.mp3");
+	console.log("you clicked me!")
 });
 
 var dog = makeSprite({
                     name:"dog", 
                     x:250,
                     y:1000,
-                    costume:"http://clipartix.com/wp-content/uploads/2016/12/Dogs-free-dog-clipart-clip-art-pictures-graphics-illustrations.jpg"})
+                    costume:"dog.png"})
+
+                    
 
 /**
  * TODO:

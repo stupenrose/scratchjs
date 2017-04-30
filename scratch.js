@@ -27,9 +27,15 @@ function whenKeyPressed(key, fn){
 }
 
 
+function playSound(url){
+	
+	var audio = new Audio(url);
+    audio.oncanplay = function() {
+        audio.play();
+    };
+}
 
 var stage = document.getElementById('scratch-stage');
-//var stage = document.createElement("canvas");
 var ctx = stage.getContext("2d");
 document.body.appendChild(stage);
 
