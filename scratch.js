@@ -15,7 +15,6 @@ body.addEventListener("keyup", function(e){
 
 function onKeyPress(key, element, fn){
   element.addEventListener("keydown", function(e){
-	console.log("Key pressed: " + e.key);
     if(e.key === key){
          fn(e);
         e.preventDefault();
@@ -37,7 +36,6 @@ document.body.appendChild(stage);
 var sprites = [];
 
 function redraw(){
-  console.log("Redraw " + sprites.length + " sprites");
   ctx.clearRect(0, 0, stage.width, stage.height);
   var x;
   for(x=0;x<sprites.length;x++){
@@ -106,11 +104,7 @@ function makeSprite(config){
 	setX(config.x);
 	
 	function handleClick(c){
-		console.log("I'm " + img.height);
-
-		
 		if(isInBounds(c)){
-			console.log("You clicked me");
 			each(clickHandlers, function(fn){
 				fn();
 			});
