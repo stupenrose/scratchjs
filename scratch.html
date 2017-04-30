@@ -1,19 +1,19 @@
 <html>
-<body></body>
+
+<canvas id="scratch-stage" 
+        width="800" 
+        height="600"
+        style="width:800px;height=600px;border:1px solid black;"></canvas>
+
 <script src="scratch.js"></script>
 
 <script>
 var scratchCat = makeSprite({
 					name:"scratchcat", 
-					x:44,
-					y:33,
+					x:200,
+					y:200,
 					costume:"scratchcat.png"})
 					
-scratchCat.whenClicked(function(){
-	alert("you clicked me!")
-});
-
-
 whenKeyPressed('ArrowLeft', function(){
 	scratchCat.rotateDegreesCounterClockwise(10)
 })
@@ -31,8 +31,12 @@ whenKeyPressed('s', function(){
 
 /**
  * TODO:
- switch to canvas?
-		 
+	 
+ // EVENTS
+sprite.whenClicked(function(){
+	alert("you clicked me!")
+});
+
  // LOOKS
 sprite.addCostume("foo", "bar.png")
 sprite.switchCostumeTo("foo")
