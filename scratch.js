@@ -44,6 +44,35 @@ function redraw(){
     sprites[x].draw(ctx);
   }
 }
+
+stage.addEventListener("click", function(e){
+    var x;
+    for(x=0;x<sprites.length;x++){
+         sprites[x].handleClick(canvasCoordiatesForEvent(e));
+    }
+});
+
+var mouseCoordinates = {};
+
+stage.addEventListener("mousemove", function(e){
+	mouseCoordinates = canvasCoordiatesForEvent(e)
+});
+
+function canvasCoordiatesForEvent(event){
+	var cnv = stage;
+	var bb = stage.getBoundingClientRect()
+	var x = (event.clientX-bb.left) * (cnv.width/bb.width)
+	var y = (event.clientY-bb.top) * (cnv.height/bb.height)
+	return {x:x,y:y};
+}
+
+function each(o, fn){
+	var x;
+    for(x=0;x<o.length;x++){
+         fn(o[x]);
+    }
+}
+
 // http://creativejs.com/2012/01/day-10-drawing-rotated-images-into-canvas/
 var TO_RADIANS = Math.PI/180; 
 function drawRotatedImage(context, image, x, y, angle) { 
@@ -71,12 +100,72 @@ function makeSprite(config){
 	var img = new Image();
 	var x, y;
 	var rotationDegrees = 0;
+	var clickHandlers = [];
 	
 	setY(config.y);
 	setX(config.x);
 	
+	function handleClick(c){
+		console.log("I'm " + img.height);
+
+		
+		if(isInBounds(c)){
+			console.log("You clicked me");
+			each(clickHandlers, function(fn){
+				fn();
+			});
+		}
+	}
+	
+	function isInBounds(c){
+		var b = bounds();
+		
+		return (
+				   c.x > b.topLeft.x 
+					&& 
+				   c.y > b.topLeft.y
+					&& 
+				   c.x < b.bottomRight.x
+					&& 
+				   c.y < b.bottomRight.y);
+	}
+	
+	function bounds(){
+		var topLeft = {x:x - (img.width/2), 
+	                   y:y - (img.height/2)}
+	
+		var topRight = {x:topLeft.x + img.width, 
+				        y:topLeft.y}
+		
+		var bottomRight = {x:topRight.x,
+				           y:topRight.y + img.height} 
+		
+	
+		var bottomLeft = {x:bottomRight.x-img.width,
+				           y:bottomRight.y} 
+		return {
+				topLeft:topLeft,
+				topRight:topRight,
+				bottomRight:bottomRight,
+				bottomLeft:bottomLeft};
+	}
+	
+	function isTouchingMousePointer(){
+		return isInBounds(mouseCoordinates);
+	}
 	function draw(ctx){
 		drawRotatedImage(ctx, img, x, y, rotationDegrees);
+		
+		/*
+		var b = bounds();
+		ctx.rect(b.topLeft.x, 
+				 b.topLeft.y,
+				 img.width, 
+				 img.height);
+		ctx.lineWidth="6";
+		ctx.strokeStyle="red";
+		ctx.stroke();
+		*/
 	}
 	
 	function changeXBy(x){
@@ -111,16 +200,45 @@ function makeSprite(config){
 		rotationDegrees = rotationDegrees - n;
 		redraw();
 	}
+	
+	function isTouchingEdge(){
+		var b = bounds();
+		
+		return (b.topLeft.x < 0 
+		   || 
+		   b.topLeft.y < 0
+		   ||
+		   b.bottomRight.x > stage.width
+		   ||
+		   b.bottomRight.y > stage.height);
+	}
+	
+	function whenClicked(h){
+		clickHandlers.push(h);
+	}
+	
 	var me = {
+		// framework contract
 		draw:draw,
-		setY:setY,
-		setX:setX,
+		handleClick:handleClick,
 		getX:getX,
 		getY:getY,
+		
+		// scratch-events
+		whenClicked:whenClicked,
+		
+		// scratch-sensing
+		isTouchingMousePointer:isTouchingMousePointer,
+		isTouchingEdge:isTouchingEdge,
+		
+		// scratch-motion
+		setY:setY,
+		setX:setX,
 		changeXBy:changeXBy,
 		changeYBy:changeYBy,
 		rotateDegreesClockwise:rotateDegreesClockwise,
 		rotateDegreesCounterClockwise:rotateDegreesCounterClockwise};
+	
 	sprites.push(me);
 	
 	img.onload = function () {

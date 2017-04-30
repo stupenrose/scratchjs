@@ -13,7 +13,15 @@ var scratchCat = makeSprite({
                     x:1000,
                     y:1000,
                     costume:"scratchcat.png"})
-					
+
+                    
+function report(){
+	console.log("is touching edge: " + scratchCat.isTouchingEdge())
+
+	if(scratchCat.isTouchingMousePointer()){
+		console.log("is touching mouse!");
+	}
+}
 whenKeyPressed('ArrowLeft', function(){
 	scratchCat.rotateDegreesCounterClockwise(10)
 })
@@ -24,18 +32,38 @@ whenKeyPressed('ArrowRight', function(){
 
 whenKeyPressed('a', function(){
 	scratchCat.changeXBy(-10)
+	report();
 })
-whenKeyPressed('s', function(){
+
+whenKeyPressed('d', function(){
 	scratchCat.changeXBy(10)
+	report();
 })
+
+whenKeyPressed('s', function(){
+	scratchCat.changeYBy(10)
+	report();
+})
+
+whenKeyPressed('w', function(){
+	scratchCat.changeYBy(-10)
+	report();
+})
+
+scratchCat.whenClicked(function(){
+	alert("you clicked me!")
+});
+
+var dog = makeSprite({
+                    name:"dog", 
+                    x:250,
+                    y:1000,
+                    costume:"http://clipartix.com/wp-content/uploads/2016/12/Dogs-free-dog-clipart-clip-art-pictures-graphics-illustrations.jpg"})
 
 /**
  * TODO:
 	 
  // EVENTS
-sprite.whenClicked(function(){
-	alert("you clicked me!")
-});
 
  // LOOKS
 sprite.addCostume("foo", "bar.png")
@@ -45,7 +73,6 @@ sprite.switchCostumeTo("foo")
 sprite.moveSteps(10);
 
  // SENSING
-sprite.isTouchingMousePointer()
 sprite.isTouchingEdge()
 sprite.isTouching(otherSprite)
 sprite.isTouchingColor("#aaaeee")
