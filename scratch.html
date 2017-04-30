@@ -10,18 +10,42 @@ var scratchCat = makeSprite({
 					costume:"scratchcat.png"})
 					
 scratchCat.whenClicked(function(){
-	alert("hi");
+	alert("you clicked me!")
 });
 
 
+whenKeyPressed('ArrowLeft', function(){
+	scratchCat.rotateDegreesCounterClockwise(10)
+})
+
+whenKeyPressed('ArrowRight', function(){
+	scratchCat.rotateDegreesClockwise(10)
+})
+
 whenKeyPressed('a', function(){
-	alert('yay')
+	scratchCat.changeXBy(-10)
+})
+whenKeyPressed('s', function(){
+	scratchCat.changeXBy(10)
 })
 
 /**
  * TODO:
+ switch to canvas?
+		 
+ // LOOKS
 sprite.addCostume("foo", "bar.png")
 sprite.switchCostumeTo("foo")
+
+ // MOTION
+sprite.moveSteps(10);
+
+ // SENSING
+sprite.isTouchingMousePointer()
+sprite.isTouchingEdge()
+sprite.isTouching(otherSprite)
+sprite.isTouchingColor("#aaaeee")
+sprite.distanceTo(otherSprite)
 
  */
 </script>

@@ -31,13 +31,57 @@ function whenKeyPressed(key, fn){
 function makeSprite(config){
 	var name = config.name;
 	var view = document.createElement("img");
+	var x, y;
+	var rotationDegrees = 0;
 	view.setAttribute("src", config.costume);
 	view.style.position = "absolute";
-	view.style.top = config.y;
-	view.style.left = config.x;
+	setY(config.y);
+	setX(config.x);
 	document.body.appendChild(view);
+	
+	function changeXBy(x){
+		setX(getX() + x);
+	}
+	
+	function changeYBy(y){
+		setY(getY() + y);
+	}
+
+	function getX(){
+		return x;
+	}
+	
+	function getY(){
+		return y;
+	}
+	
+	function setX(newX){
+		x = newX;
+		view.style.left = x;
+	}
+	function setY(newY){
+		y = newY;
+		view.style.top = y;
+	}
 	function whenClicked(fn){
 		view.addEventListener("click", fn);
 	}
-	return {whenClicked:whenClicked};
+	function rotateDegreesClockwise(n){
+		rotationDegrees = rotationDegrees + n;
+		view.style.transform = "rotate(" + rotationDegrees + "deg)"
+	}
+	function rotateDegreesCounterClockwise(n){
+		rotationDegrees = rotationDegrees - n;
+		view.style.transform = "rotate(" + rotationDegrees + "deg)"
+	}
+	return {
+		whenClicked:whenClicked, 
+		setY:setY,
+		setX:setX,
+		getX:getX,
+		getY:getY,
+		changeXBy:changeXBy,
+		changeYBy:changeYBy,
+		rotateDegreesClockwise:rotateDegreesClockwise,
+		rotateDegreesCounterClockwise:rotateDegreesCounterClockwise};
 }
