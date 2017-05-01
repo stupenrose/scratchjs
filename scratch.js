@@ -60,6 +60,7 @@ var mouseCoordinates = {};
 
 stage.addEventListener("mousemove", function(e){
 	mouseCoordinates = canvasCoordiatesForEvent(e)
+	console.log(mouseCoordinates)
 });
 
 function canvasCoordiatesForEvent(event){
