@@ -70,11 +70,31 @@ function canvasCoordiatesForEvent(event){
 	return {x:x,y:y};
 }
 
+function find(o, predicate){
+	var result;
+	each(o, function(item){
+		if(predicate(item)){
+			result = item;
+		}
+	});
+	return result;
+}
+
 function each(o, fn){
-	var x;
-    for(x=0;x<o.length;x++){
-         fn(o[x]);
-    }
+	if(o instanceof Array){
+		var x;
+	    for(x=0;x<o.length;x++){
+	         fn(o[x], x);
+	    }
+	}else{
+		var names = o.getOwnPropertyNames();
+		var x;
+	    for(x=0;x<names.length;x++){
+	    	var name = names[x];
+	         fn(o[name], name);
+	    }
+	}
+	
 }
 
 // http://creativejs.com/2012/01/day-10-drawing-rotated-images-into-canvas/
@@ -101,13 +121,44 @@ function drawRotatedImage(context, image, x, y, angle) {
 }
 function makeSprite(config){
 	var name = config.name;
-	var img = new Image();
+	var costume;
 	var x, y;
 	var rotationDegrees = 0;
 	var clickHandlers = [];
 	
 	setY(config.y);
 	setX(config.x);
+	
+	var costumes = [];
+	
+	function nextCostume(){
+		var idx = costumes.indexOf(costume);
+		var next;
+		
+		if(idx === (costumes.length -1)){
+			next = 0;
+		}else{
+			next = idx + 1;
+		}
+		costume = costumes[next];
+		console.log(next, costume)
+		redraw();
+	}
+	
+	function addCostume(name, url){
+		var img = new Image();
+		costumes.push({name:name, url:url, img:img});
+		img.onload = function () {
+			redraw();
+		}
+		img.src = url;
+	}
+	
+	function switchCostumeTo(name){
+		costume = find(costumes, function(c){return c.name == name;})
+		redraw();
+	}
+	
 	
 	function handleClick(c){
 		if(isInBounds(c)){
@@ -131,17 +182,20 @@ function makeSprite(config){
 	}
 	
 	function bounds(){
-		var topLeft = {x:x - (img.width/2), 
-	                   y:y - (img.height/2)}
+		var width = costume.img.width;
+		var height = costume.img.height;
+		
+		var topLeft = {x:x - (width/2), 
+	                   y:y - (height/2)}
 	
-		var topRight = {x:topLeft.x + img.width, 
+		var topRight = {x:topLeft.x + width, 
 				        y:topLeft.y}
 		
 		var bottomRight = {x:topRight.x,
-				           y:topRight.y + img.height} 
+				           y:topRight.y + height} 
 		
 	
-		var bottomLeft = {x:bottomRight.x-img.width,
+		var bottomLeft = {x:bottomRight.x - width,
 				           y:bottomRight.y} 
 		return {
 				topLeft:topLeft,
@@ -154,7 +208,7 @@ function makeSprite(config){
 		return isInBounds(mouseCoordinates);
 	}
 	function draw(ctx){
-		drawRotatedImage(ctx, img, x, y, rotationDegrees);
+		drawRotatedImage(ctx, costume.img, x, y, rotationDegrees);
 		
 		/*
 		var b = bounds();
@@ -217,12 +271,18 @@ function makeSprite(config){
 		clickHandlers.push(h);
 	}
 	
+	
 	var me = {
 		// framework contract
 		draw:draw,
 		handleClick:handleClick,
 		getX:getX,
 		getY:getY,
+		
+		// scratch-looks
+		addCostume:addCostume,
+		switchCostumeTo:switchCostumeTo,
+		nextCostume:nextCostume,
 		
 		// scratch-events
 		whenClicked:whenClicked,
@@ -241,10 +301,8 @@ function makeSprite(config){
 	
 	sprites.push(me);
 	
-	img.onload = function () {
-		redraw();
-	}
-	img.src = config.costume;
+	addCostume("default", config.costume);
+	switchCostumeTo("default");
 	
 	return me;
 }

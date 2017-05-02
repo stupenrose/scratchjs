@@ -30,6 +30,18 @@ whenKeyPressed('ArrowRight', function(){
 	scratchCat.rotateDegreesClockwise(10)
 })
 
+
+scratchCat.addCostume("dog", "dog.png")
+scratchCat.addCostume("frog", "frog.png")
+
+whenKeyPressed('ArrowUp', function(){
+	scratchCat.switchCostumeTo("dog")
+})
+
+whenKeyPressed('ArrowDown', function(){
+	scratchCat.nextCostume()
+})
+
 whenKeyPressed('a', function(){
 	scratchCat.changeXBy(-10)
 	report();
@@ -54,7 +66,7 @@ scratchCat.whenClicked(function(){
 	playSound("meow.mp3");
 	console.log("you clicked me!")
 });
-
+ 
 var dog = makeSprite({
                     name:"dog", 
                     x:250,
@@ -69,8 +81,6 @@ var dog = makeSprite({
  // EVENTS
 
  // LOOKS
-sprite.addCostume("foo", "bar.png")
-sprite.switchCostumeTo("foo")
 
  // MOTION
 sprite.moveSteps(10);
