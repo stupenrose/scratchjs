@@ -120,6 +120,58 @@ function drawRotatedImage(context, image, x, y, angle, percentSize) {
 	// and restore the co-ords to how they were when we began
 	context.restore(); 
 }
+
+
+
+function drawBubble(context, rectX, rectY, rectWidth, rectHeight, cornerRadius){
+      context.beginPath();
+      context.moveTo(rectX + cornerRadius, rectY);
+      // top
+      context.lineTo(rectX + rectWidth - cornerRadius, rectY);
+      // top right
+      context.arcTo(rectX + rectWidth, 
+    		        rectY, 
+    		        rectX + rectWidth, 
+    		        rectY + cornerRadius, 
+    		        cornerRadius);
+      // right
+      context.lineTo(rectX + rectWidth, rectY + rectHeight - cornerRadius);
+      
+      // bottom right
+      context.arcTo(rectX + rectWidth, 
+    		        rectY + rectHeight, 
+    		        rectX + rectWidth - cornerRadius, 
+    		        rectY + rectHeight, 
+    		        cornerRadius);
+      
+      // bottom
+      context.lineTo(rectX + cornerRadius, rectY + rectHeight);
+      
+      // bottom left
+//      context.arcTo(rectX, 
+//    		        rectY + rectHeight, 
+//    		        rectX, 
+//    		        rectY + rectHeight - cornerRadius, 
+//    		        cornerRadius);
+      var spikeWidth = rectHeight / 3;
+      var spikeHeight = spikeWidth;
+      
+      context.lineTo(rectX - spikeWidth, rectY + rectHeight + spikeHeight);
+      context.lineTo(rectX, rectY + rectHeight - cornerRadius);
+      
+      // left
+      context.lineTo(rectX, rectY + cornerRadius);
+      
+
+      // top left
+      context.arcTo(rectX, 
+	  		        rectY, 
+	  		        rectX + cornerRadius, 
+	  		        rectY, 
+	  		        cornerRadius);
+      context.stroke();
+}
+
 function makeSprite(config){
 	var name = config.name;
 	var costume;
@@ -133,6 +185,25 @@ function makeSprite(config){
 	setX(config.x);
 	
 	var costumes = [];
+	var message = undefined;
+	
+	function sayForNSeconds(text, n){
+		message = {
+				text:text,
+				timeout: (new Date().getTime() + (n * 1000))
+		};
+		
+		(function handleMessageTimeout(){
+			if(new Date().getTime() > message.timeout){
+				console.log('Done saying "' + message.text + '"')
+				message = undefined;
+				redraw();
+			}else{
+				setTimeout(handleMessageTimeout, 100)
+			}
+			
+		})();
+	}
 	
 	function goToFront(){
 		var idx = sprites.indexOf(me);
@@ -257,19 +328,34 @@ function makeSprite(config){
 	function isTouchingMousePointer(){
 		return isInBounds(mouseCoordinates);
 	}
+	
+	
 	function draw(ctx){
 		if(visible) drawRotatedImage(ctx, costume.img, x, y, rotationDegrees, percentSize);
 		
-		/*
-		var b = bounds();
-		ctx.rect(b.topLeft.x, 
-				 b.topLeft.y,
-				 img.width, 
-				 img.height);
-		ctx.lineWidth="6";
-		ctx.strokeStyle="red";
-		ctx.stroke();
-		*/
+		if(message){
+			var b = bounds();
+			ctx.font = "40px Arial";
+			var m = ctx.measureText(message.text);
+			
+			var margin = 20;
+			var textHeight = 28;
+			
+			ctx.fillText(message.text,b.topRight.x + margin,b.topRight.y );
+
+			ctx.lineWidth="6";
+			ctx.strokeStyle="black";
+			
+			drawBubble(ctx,
+					 b.topRight.x, 
+					 b.topRight.y - (textHeight + ( margin)),
+					 m.width + (2 * margin), 
+					 textHeight + (2 * margin),
+					 20
+					 );
+			
+			ctx.stroke();
+		}
 	}
 	
 	function changeXBy(x){
@@ -352,6 +438,7 @@ function makeSprite(config){
 		goBackLayers:goBackLayers,
 		getSize:getSize,
 		getCostumeNumber:getCostumeNumber,
+		sayForNSeconds:sayForNSeconds,
 		
 		// scratch-events
 		whenClicked:whenClicked,

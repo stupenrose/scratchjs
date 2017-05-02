@@ -112,7 +112,11 @@ var dog = makeSprite({
                     y:1000,
                     costume:"dog.png"})
 
-                    
+scratchCat.sayForNSeconds("Welcome to scratchjs!", 3)
+
+setTimeout(function(){
+	dog.sayForNSeconds("Ruff!", 3)
+}, 3000)
 
 /**
  * TODO:
