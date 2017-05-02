@@ -68,6 +68,14 @@ whenKeyPressed('j', function(){
 	scratchCat.hide()
 })
 
+whenKeyPressed('0', function(){
+	scratchCat.goToFront();
+});
+
+whenKeyPressed('9', function(){
+	scratchCat.goBackLayers(1);
+});
+
 whenKeyPressed('a', function(){
 	scratchCat.changeXBy(-10)
 	report();

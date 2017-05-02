@@ -134,6 +134,30 @@ function makeSprite(config){
 	
 	var costumes = [];
 	
+	function goToFront(){
+		var idx = sprites.indexOf(me);
+		sprites.splice(idx, 1);
+		
+		sprites.push(me);
+		redraw();
+	}
+	
+	function goBackLayers(n){
+
+		var idx = sprites.indexOf(me);
+		
+		if(idx>0){
+			sprites.splice(idx, 1);// remove from current position
+			
+			var newIdx = idx - 1;
+			sprites.splice(newIdx, 0, me); // add at other position
+			
+			console.log("At layer " + newIdx);
+		}
+		
+		redraw();
+	}
+	
 	function changeSizeBy(pixels){
 		var renderedSize = costume.img.width * (percentSize/100);
 		percentSize = ((renderedSize + pixels)/costume.img.width) * 100;
@@ -312,6 +336,8 @@ function makeSprite(config){
 		changeSizeBy:changeSizeBy,
 		show:show,
 		hide:hide,
+		goToFront:goToFront,
+		goBackLayers:goBackLayers,
 		
 		// scratch-events
 		whenClicked:whenClicked,
