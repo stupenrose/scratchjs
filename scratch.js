@@ -127,6 +127,7 @@ function makeSprite(config){
 	var rotationDegrees = 0;
 	var clickHandlers = [];
 	var percentSize = 100;
+	var visible = true;
 	
 	setY(config.y);
 	setX(config.x);
@@ -221,7 +222,7 @@ function makeSprite(config){
 		return isInBounds(mouseCoordinates);
 	}
 	function draw(ctx){
-		drawRotatedImage(ctx, costume.img, x, y, rotationDegrees, percentSize);
+		if(visible) drawRotatedImage(ctx, costume.img, x, y, rotationDegrees, percentSize);
 		
 		/*
 		var b = bounds();
@@ -268,6 +269,17 @@ function makeSprite(config){
 		redraw();
 	}
 	
+	function show(){
+		visible = true;
+		redraw();
+	}
+	
+
+	function hide(){
+		visible = false;
+		redraw();
+	}
+	
 	function isTouchingEdge(){
 		var b = bounds();
 		
@@ -298,6 +310,8 @@ function makeSprite(config){
 		nextCostume:nextCostume,
 		setSizeTo:setSizeTo,
 		changeSizeBy:changeSizeBy,
+		show:show,
+		hide:hide,
 		
 		// scratch-events
 		whenClicked:whenClicked,
