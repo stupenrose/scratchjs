@@ -158,6 +158,11 @@ function makeSprite(config){
 		redraw();
 	}
 	
+
+	function getSize(){
+		return costume.img.width * (percentSize/100);
+	}
+	
 	function changeSizeBy(pixels){
 		var renderedSize = costume.img.width * (percentSize/100);
 		percentSize = ((renderedSize + pixels)/costume.img.width) * 100;
@@ -319,7 +324,7 @@ function makeSprite(config){
 	function whenClicked(h){
 		clickHandlers.push(h);
 	}
-	
+
 	
 	var me = {
 		// framework contract
@@ -338,6 +343,7 @@ function makeSprite(config){
 		hide:hide,
 		goToFront:goToFront,
 		goBackLayers:goBackLayers,
+		getSize:getSize,
 		
 		// scratch-events
 		whenClicked:whenClicked,

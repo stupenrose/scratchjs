@@ -17,7 +17,7 @@ var scratchCat = makeSprite({
                     
 function report(){
 	console.log("is touching edge: " + scratchCat.isTouchingEdge())
-
+	console.log("size: " + scratchCat.getSize())
 	if(scratchCat.isTouchingMousePointer()){
 		console.log("is touching mouse!");
 	}
@@ -53,10 +53,12 @@ whenKeyPressed('l', function(){
 
 whenKeyPressed('i', function(){
 	scratchCat.changeSizeBy(10)
+	report();
 })
 
 whenKeyPressed('k', function(){
 	scratchCat.changeSizeBy(-10)
+	report();
 })
 
 
