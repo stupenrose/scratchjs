@@ -174,6 +174,10 @@ function makeSprite(config){
 		redraw();
 	}
 	
+	function getCostumeNumber(){
+		return costumes.indexOf(costume);
+	}
+	
 	function nextCostume(){
 		var idx = costumes.indexOf(costume);
 		var next;
@@ -344,6 +348,7 @@ function makeSprite(config){
 		goToFront:goToFront,
 		goBackLayers:goBackLayers,
 		getSize:getSize,
+		getCostumeNumber:getCostumeNumber,
 		
 		// scratch-events
 		whenClicked:whenClicked,

@@ -18,6 +18,7 @@ var scratchCat = makeSprite({
 function report(){
 	console.log("is touching edge: " + scratchCat.isTouchingEdge())
 	console.log("size: " + scratchCat.getSize())
+	console.log("costume #", scratchCat.getCostumeNumber())
 	if(scratchCat.isTouchingMousePointer()){
 		console.log("is touching mouse!");
 	}
@@ -36,10 +37,12 @@ scratchCat.addCostume("frog", "frog.png")
 
 whenKeyPressed('ArrowUp', function(){
 	scratchCat.switchCostumeTo("dog")
+	report();
 })
 
 whenKeyPressed('ArrowDown', function(){
 	scratchCat.nextCostume()
+	report();
 })
 
 whenKeyPressed('o', function(){
