@@ -139,21 +139,24 @@ function makeSprite(config){
 		sprites.splice(idx, 1);
 		
 		sprites.push(me);
+		
+		console.log("At layer " + sprites.indexOf(me));
+		
 		redraw();
 	}
 	
 	function goBackLayers(n){
 
 		var idx = sprites.indexOf(me);
+
+		var requestedIdx = idx - n;
 		
-		if(idx>0){
-			sprites.splice(idx, 1);// remove from current position
-			
-			var newIdx = idx - 1;
-			sprites.splice(newIdx, 0, me); // add at other position
-			
-			console.log("At layer " + newIdx);
-		}
+		var newIdx = (requestedIdx >= 0) ? requestedIdx : 0;
+		
+		sprites.splice(idx, 1);// remove from current position
+		sprites.splice(newIdx, 0, me); // add at new position
+		
+		console.log("At layer " + newIdx);
 		
 		redraw();
 	}
