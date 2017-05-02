@@ -99,7 +99,7 @@ function each(o, fn){
 
 // http://creativejs.com/2012/01/day-10-drawing-rotated-images-into-canvas/
 var TO_RADIANS = Math.PI/180; 
-function drawRotatedImage(context, image, x, y, angle) { 
+function drawRotatedImage(context, image, x, y, angle, percentSize) { 
  
 	// save the current co-ordinate system 
 	// before we screw with it
@@ -114,7 +114,8 @@ function drawRotatedImage(context, image, x, y, angle) {
  
 	// draw it up and to the left by half the width
 	// and height of the image 
-	context.drawImage(image, -(image.width/2), -(image.height/2));
+	var percent = percentSize/100;
+	context.drawImage(image, 0, 0, image.width, image.height, -(image.width/2), -(image.height/2), image.width * percent, image.height * percent);
  
 	// and restore the co-ords to how they were when we began
 	context.restore(); 
@@ -125,11 +126,23 @@ function makeSprite(config){
 	var x, y;
 	var rotationDegrees = 0;
 	var clickHandlers = [];
+	var percentSize = 100;
 	
 	setY(config.y);
 	setX(config.x);
 	
 	var costumes = [];
+	
+	function changeSizeBy(pixels){
+		var renderedSize = costume.img.width * (percentSize/100);
+		percentSize = ((renderedSize + pixels)/costume.img.width) * 100;
+		redraw();
+	}
+	
+	function setSizeTo(percent){
+		percentSize = percent;
+		redraw();
+	}
 	
 	function nextCostume(){
 		var idx = costumes.indexOf(costume);
@@ -208,7 +221,7 @@ function makeSprite(config){
 		return isInBounds(mouseCoordinates);
 	}
 	function draw(ctx){
-		drawRotatedImage(ctx, costume.img, x, y, rotationDegrees);
+		drawRotatedImage(ctx, costume.img, x, y, rotationDegrees, percentSize);
 		
 		/*
 		var b = bounds();
@@ -283,6 +296,8 @@ function makeSprite(config){
 		addCostume:addCostume,
 		switchCostumeTo:switchCostumeTo,
 		nextCostume:nextCostume,
+		setSizeTo:setSizeTo,
+		changeSizeBy:changeSizeBy,
 		
 		// scratch-events
 		whenClicked:whenClicked,

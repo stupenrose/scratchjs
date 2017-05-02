@@ -42,6 +42,23 @@ whenKeyPressed('ArrowDown', function(){
 	scratchCat.nextCostume()
 })
 
+whenKeyPressed('o', function(){
+	scratchCat.setSizeTo(200);
+})
+
+whenKeyPressed('l', function(){
+	scratchCat.setSizeTo(50);
+})
+
+
+whenKeyPressed('i', function(){
+	scratchCat.changeSizeBy(10)
+})
+
+whenKeyPressed('k', function(){
+	scratchCat.changeSizeBy(-10)
+})
+
 whenKeyPressed('a', function(){
 	scratchCat.changeXBy(-10)
 	report();
