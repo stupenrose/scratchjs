@@ -116,6 +116,7 @@ var dog = makeSprite({
                     y:1000,
                     costume:"dog.png"})
 
+dog.goTo(300, 1000);
 scratchCat.sayForNSeconds("Welcome to scratchjs!", 3)
 
 setTimeout(function(){
@@ -129,6 +130,9 @@ var n = 0;
 	dog.pointInDirection(n);
 	setTimeout(rotateDog, 100);
 }());
+
+
+dog.glideNSecondsToXY(10, 1800, 100)
 
 /**
  * TODO:

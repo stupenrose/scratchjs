@@ -383,6 +383,12 @@ function makeSprite(config){
 		redraw();
 	}
 	
+	function goTo(newX, newY){
+		x = newX;
+		y = newY;
+		redraw();
+	}
+	
 	function pointInDirection(degrees){
 		rotationDegrees = degrees;
 		redraw();
@@ -396,15 +402,42 @@ function makeSprite(config){
 		redraw();
 	}
 	
+	function glideNSecondsToXY(seconds, x, y){
+		var framesPerSecond = 30
+		var dx = x - getX();
+		var dy = y - getY();
+		var angleRadians = Math.atan(dy/dx);
+		
+		var distance = dx / Math.cos(angleRadians);
+		var numFrames = seconds * framesPerSecond;
+		var frameLengthInMillis = (seconds * 1000)/numFrames;
+		var stepsPerFrame = (distance / numFrames);
 
+		var frame = 0;
+		(function nextFrame(){
+			frame = frame + 1;
+			private_moveNStepsInDirection(stepsPerFrame, angleRadians);
+			if(frame <= numFrames) {
+				setTimeout(nextFrame, frameLengthInMillis);
+			}else{
+				goTo(x, y);
+			}
+			console.log(getX(), getY())
+		}());
+	}
     
 	function moveNSteps(n){
-	    function toRadians (angle) {
+		function toRadians (angle) {
 	        return angle * (Math.PI / 180);
 	    }
-	    var x = n * Math.cos(toRadians(rotationDegrees));
-		var y = n * Math.sin(toRadians(rotationDegrees));
-		console.log("x", x, "y", y);
+		private_moveNStepsInDirection(n, toRadians(rotationDegrees))
+	}
+	
+	function private_moveNStepsInDirection(n, directionInRadians){
+	    
+	    var x = n * Math.cos(directionInRadians);
+		var y = n * Math.sin(directionInRadians);
+		
 		setX(getX() + x);
 		setY(getY() + y);
 		redraw();
@@ -438,6 +471,7 @@ function makeSprite(config){
 	}
 
 	
+	
 	var me = {
 		// framework contract
 		draw:draw,
@@ -469,9 +503,11 @@ function makeSprite(config){
 		// scratch-motion
 		setY:setY,
 		setX:setX,
+		goTo:goTo,
 		changeXBy:changeXBy,
 		changeYBy:changeYBy,
 		moveNSteps:moveNSteps,
+		glideNSecondsToXY:glideNSecondsToXY,
 		pointInDirection:pointInDirection,
 		rotateDegreesClockwise:rotateDegreesClockwise,
 		rotateDegreesCounterClockwise:rotateDegreesCounterClockwise};
