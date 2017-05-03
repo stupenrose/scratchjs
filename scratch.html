@@ -22,6 +22,11 @@ function report(){
 	if(scratchCat.isTouchingMousePointer()){
 		console.log("is touching mouse!");
 	}
+	
+	if(scratchCat.isTouchingColor("#9d591c")){
+
+		scratchCat.sayForNSeconds("Ouch!", 1)
+	}
 }
 whenKeyPressed('ArrowLeft', function(){
 	scratchCat.rotateDegreesCounterClockwise(10)
@@ -124,12 +129,12 @@ setTimeout(function(){
 }, 3000)
 
 
-var n = 0;
+var n = 0/* ;
 (function rotateDog(){
 	n = n+1;
 	dog.pointInDirection(n);
 	setTimeout(rotateDog, 100);
-}());
+}()); */
 
 
 dog.glideNSecondsToXY(10, 1800, 100)

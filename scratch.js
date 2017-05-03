@@ -194,6 +194,7 @@ function makeSprite(config){
 		};
 		
 		(function handleMessageTimeout(){
+			if(!message) return;
 			if(new Date().getTime() > message.timeout){
 				console.log('Done saying "' + message.text + '"')
 				message = undefined;
@@ -454,6 +455,60 @@ function makeSprite(config){
 		redraw();
 	}
 	
+	function isTouchingColor(color){
+		
+		function componentToHex(c) {
+		    var hex = c.toString(16);
+		    return hex.length == 1 ? "0" + hex : hex;
+		}
+
+		function rgbToHex(r, g, b) {
+		    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+		}
+		
+		
+//		var ctx = stage.getContext("2d");
+//		ctx.fillStyle="#FF0000";
+//		ctx.fillRect(getX()+(costume.img.width/2), getY()-(costume.img.height/2), 1, costume.img.height)
+		
+		
+		function leftEdge(){
+//			console.log("left");
+			return ctx.getImageData(getX()-(costume.img.width/2), getY()-(costume.img.height/2), 1, costume.img.height).data;
+		}
+		
+		function rightEdge(){
+//			console.log("right");
+			return ctx.getImageData(getX()+(costume.img.width/2), getY()-(costume.img.height/2), 1, costume.img.height).data;
+		}
+		
+		function topEdge(){
+//			console.log("top");
+			return ctx.getImageData(getX()-(costume.img.width/2), getY()-(costume.img.height/2), costume.img.width, 1).data;
+		}
+		
+		function bottomEdge(){
+//			console.log("bottom");
+			return ctx.getImageData(getX()-(costume.img.width/2), getY()+(costume.img.height/2), costume.img.width, 1).data;
+		}
+		
+		function hasColor(pixelData){
+			var numPixels = pixelData.length/4;
+			var result = false;
+			for(var x=0;x<pixelData.length;x+=4){
+				var hex = rgbToHex(pixelData[x], pixelData[x+1], pixelData[x+2]);
+//				console.log(x, hex, componentToHex(pixelData[x+3]));
+				if(hex === color){
+					return true;
+				}
+			}
+			return result;
+		}
+		
+		return hasColor(leftEdge()) || hasColor(rightEdge()) || hasColor(topEdge()) || hasColor(bottomEdge());
+		
+	}
+	
 	function isTouchingEdge(){
 		var b = bounds();
 		
@@ -499,6 +554,7 @@ function makeSprite(config){
 		// scratch-sensing
 		isTouchingMousePointer:isTouchingMousePointer,
 		isTouchingEdge:isTouchingEdge,
+		isTouchingColor:isTouchingColor,
 		
 		// scratch-motion
 		setY:setY,
