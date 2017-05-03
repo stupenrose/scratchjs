@@ -101,6 +101,10 @@ whenKeyPressed('w', function(){
 	report();
 })
 
+whenKeyPressed('t', function(){
+	scratchCat.moveNSteps(10);
+});
+
 scratchCat.whenClicked(function(){
 	playSound("meow.mp3");
 	console.log("you clicked me!")

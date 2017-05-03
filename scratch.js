@@ -396,6 +396,20 @@ function makeSprite(config){
 		redraw();
 	}
 	
+
+    
+	function moveNSteps(n){
+	    function toRadians (angle) {
+	        return angle * (Math.PI / 180);
+	    }
+	    var x = n * Math.cos(toRadians(rotationDegrees));
+		var y = n * Math.sin(toRadians(rotationDegrees));
+		console.log("x", x, "y", y);
+		setX(getX() + x);
+		setY(getY() + y);
+		redraw();
+	}
+	
 	function show(){
 		visible = true;
 		redraw();
@@ -457,6 +471,7 @@ function makeSprite(config){
 		setX:setX,
 		changeXBy:changeXBy,
 		changeYBy:changeYBy,
+		moveNSteps:moveNSteps,
 		pointInDirection:pointInDirection,
 		rotateDegreesClockwise:rotateDegreesClockwise,
 		rotateDegreesCounterClockwise:rotateDegreesCounterClockwise};
