@@ -24,8 +24,13 @@ function report(){
 	}
 	
 	if(scratchCat.isTouchingColor("#9d591c")){
-
 		scratchCat.sayForNSeconds("Ouch!", 1)
+	}
+	
+	if(scratchCat.isTouchingSprite(dog)){
+		console.log("Cat and Dog are touching")
+	}else{
+		console.log("Cat and Dog are not touching")
 	}
 }
 whenKeyPressed('ArrowLeft', function(){
@@ -133,7 +138,7 @@ var n = 0 ;
 (function rotateDog(){
 	n = n+1;
 	dog.pointInDirection(n);
-	setTimeout(rotateDog, 100);
+	setTimeout(rotateDog, 30);
 }()); 
 
 
@@ -142,16 +147,7 @@ dog.glideNSecondsToXY(10, 1800, 100)
 /**
  * TODO:
 	 
- // EVENTS
-
- // LOOKS
-
- // MOTION
-sprite.moveSteps(10);
-
  // SENSING
-sprite.isTouching(otherSprite)
-sprite.isTouchingColor("#aaaeee")
 sprite.distanceTo(otherSprite)
 
  */

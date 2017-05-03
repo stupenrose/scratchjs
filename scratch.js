@@ -390,6 +390,12 @@ function makeSprite(config){
 		redraw();
 	}
 	
+	function goToSprite(otherSprite){
+		x = otherSprite.getX();
+		y = otherSprite.getY();
+		redraw();
+	}
+	
 	function pointInDirection(degrees){
 		rotationDegrees = degrees;
 		redraw();
@@ -520,6 +526,30 @@ function makeSprite(config){
 		   b.bottomRight.y > stage.height);
 	}
 	
+	function isTouchingSprite(otherSprite){
+		var boundsA = bounds();
+		var boundsB = otherSprite.bounds();
+		
+		var l1 = boundsA.topLeft; //: Top Left coordinate of first rectangle.
+		var r1 = boundsA.bottomRight; //: Bottom Right coordinate of first rectangle.
+		var l2 = boundsB.topLeft; //: Top Left coordinate of second rectangle.
+		var r2 = boundsB.bottomRight; //: Bottom Right coordinate of second rectangle
+		
+	    // If one rectangle is on left side of other
+	    if (l1.x > r2.x || l2.x > r1.x){
+	    	console.log("On Left Side");
+	        return false;
+	    }
+	 
+	    // If one rectangle is above other
+	    if (l1.y > r2.y || l2.y > r1.y){
+	    	console.log("Above");
+	        return false;
+	    }
+	 
+	    return true;
+	}
+	
 	function whenClicked(h){
 		clickHandlers.push(h);
 	}
@@ -530,6 +560,7 @@ function makeSprite(config){
 		// framework contract
 		draw:draw,
 		handleClick:handleClick,
+		bounds:bounds,
 		getX:getX,
 		getY:getY,
 		
@@ -554,11 +585,13 @@ function makeSprite(config){
 		isTouchingMousePointer:isTouchingMousePointer,
 		isTouchingEdge:isTouchingEdge,
 		isTouchingColor:isTouchingColor,
+		isTouchingSprite:isTouchingSprite,
 		
 		// scratch-motion
 		setY:setY,
 		setX:setX,
 		goTo:goTo,
+		goToSprite:goToSprite,
 		changeXBy:changeXBy,
 		changeYBy:changeYBy,
 		moveNSteps:moveNSteps,
