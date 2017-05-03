@@ -423,7 +423,6 @@ function makeSprite(config){
 			}else{
 				goTo(x, y);
 			}
-			console.log(getX(), getY())
 		}());
 	}
     
