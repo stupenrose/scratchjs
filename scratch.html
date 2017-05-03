@@ -118,6 +118,14 @@ setTimeout(function(){
 	dog.sayForNSeconds("Ruff!", 3)
 }, 3000)
 
+
+var n = 0;
+(function rotateDog(){
+	n = n+1;
+	dog.pointInDirection(n);
+	setTimeout(rotateDog, 100);
+}());
+
 /**
  * TODO:
 	 

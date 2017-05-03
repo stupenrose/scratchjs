@@ -382,6 +382,11 @@ function makeSprite(config){
 		y = newY;
 		redraw();
 	}
+	
+	function pointInDirection(degrees){
+		rotationDegrees = degrees;
+		redraw();
+	}
 	function rotateDegreesClockwise(n){
 		rotationDegrees = rotationDegrees + n;
 		redraw();
@@ -452,6 +457,7 @@ function makeSprite(config){
 		setX:setX,
 		changeXBy:changeXBy,
 		changeYBy:changeYBy,
+		pointInDirection:pointInDirection,
 		rotateDegreesClockwise:rotateDegreesClockwise,
 		rotateDegreesCounterClockwise:rotateDegreesCounterClockwise};
 	
